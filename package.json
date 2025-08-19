@@ -1,0 +1,22 @@
+{
+  "name": "mathcpu",
+  "version": "0.1.0",
+  "description": "Aplicação de terminal para computações matemáticas",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node testes/testeAlgebra.js"
+  },
+  "keywords": [
+    "math",
+    "terminal",
+    "algebra",
+    "statistics",
+    "geometry",
+    "calculus",
+    "number-theory"
+  ],
+  "author": "SrAqua",
+  "license": "MIT"
+}
