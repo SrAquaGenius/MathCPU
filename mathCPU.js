@@ -3,10 +3,10 @@
  * Authors:  SrAqua
  * ------------------------------------------------------------------------- */
 
-const readline = require("readline");
 const { log, todo } = require("./src/utils/logger");
+const { criarInterface } = require("./src/utils/input");
 
-const { menuAlgebra } = require("./menuAlgebra");
+const { menuAlgebra } = require("./src/menu/menuAlgebra");
 
 function menuPrincipal() {
     log("\n=== MathCPU ===");
@@ -17,10 +17,7 @@ function menuPrincipal() {
     log("5. Estatística");
     log("0. Sair");
 
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
+    const rl = criarInterface();
 
     rl.question("Escolha uma opção: ", (resposta) => {
         switch (resposta) {
