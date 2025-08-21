@@ -3,20 +3,17 @@
  * Authors:  SrAqua
  * ------------------------------------------------------------------------- */
 
-const { clear, log, todo } = require("./src/utils/logger");
-const { criarInterface } = require("./src/utils/input");
+const { rl } = require("./src/utils/input");
+const { clear, log, error, todo } = require("./src/utils/logger");
 
 const { menuAlgebra } = require("./src/menu/menuAlgebra");
 
-
-const input = criarInterface();
+clear();
 menuPrincipal();
-
 
 function menuPrincipal() {
 
-	clear();
-	log("\n=== MathCPU ===");
+	log("=== MathCPU ===");
 	log("1. Álgebra");
 	log("2. Cálculo");
 	log("3. Geometria");
@@ -24,15 +21,15 @@ function menuPrincipal() {
 	log("5. Estatística");
 	log("0. Sair");
 
-	input.question("Escolha uma opção: ", (resposta) => {
+	rl.question("Escolha uma opção: ", (resposta) => {
 		switch (resposta) {
-			case "1": menuAlgebra(input, menuPrincipal); break;
-			case "2": todo(); break;
-			case "3": todo(); break;
-			case "4": todo(); break;
-			case "5": todo(); break;
-			case "0": input.close(); break;
-			default: log("❌ Opção inválida"); menuPrincipal();
+			case "1": menuAlgebra(menuPrincipal); break;
+			case "2": todo("Menu Cálculo"); menuPrincipal(); break;
+			case "3": todo("Menu Geometria"); menuPrincipal(); break;
+			case "4": todo("Menu Teoria dos Números"); menuPrincipal(); break;
+			case "5": todo("Menu Estatística"); menuPrincipal(); break;
+			case "0": log("👋 Adeus!"); rl.close(); break;
+			default: error("Opção inválida"); menuPrincipal();
 		}
 	});
 }
