@@ -4,6 +4,7 @@
  * ------------------------------------------------------------------------- */
 
 const { rl } = require("./src/utils/input");
+const { mostrarDebug, mudarDebug } = require("./src/utils/debug");
 const { clear, log, error, todo } = require("./src/utils/logger");
 
 const { menuAlgebra } = require("./src/menu/menuAlgebra");
@@ -14,12 +15,13 @@ menuPrincipal();
 function menuPrincipal() {
 
 	log("=== MathCPU ===");
-	log("1. Álgebra");
-	log("2. Cálculo");
-	log("3. Geometria");
-	log("4. Teoria dos Números");
-	log("5. Estatística");
-	log("0. Sair");
+	log("1 - Álgebra");
+	log("2 - Cálculo");
+	log("3 - Geometria");
+	log("4 - Teoria dos Números");
+	log("5 - Estatística");
+	log("6 - Ativar/Desativar o debug: (", mostrarDebug() ? "🟢" : "⚫", ")");
+	log("0 - Sair");
 
 	rl.question("Escolha uma opção: ", (resposta) => {
 		switch (resposta) {
@@ -28,6 +30,7 @@ function menuPrincipal() {
 			case "3": todo("Menu Geometria"); menuPrincipal(); break;
 			case "4": todo("Menu Teoria dos Números"); menuPrincipal(); break;
 			case "5": todo("Menu Estatística"); menuPrincipal(); break;
+			case "6": mudarDebug(); menuPrincipal(); break;
 			case "0": log("👋 Adeus!"); rl.close(); break;
 			default: error("Opção inválida"); menuPrincipal();
 		}

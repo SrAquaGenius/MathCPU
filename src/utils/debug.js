@@ -11,7 +11,7 @@ let debugPlusFlag = false;
 /** @brief troca o estado de debug atual */
 function mudarDebug() {
 	debugFlag = !debugFlag;
-	log(`🐞 Modo de debug ${debugFlag ? "ativado" : "desativado"}`);
+	log(`🐞 Modo de debug ${debugFlag ? "ativado" : "desativado"}\n`);
 }
 
 /** @brief Devolve o estado de debug atual */
