@@ -3,7 +3,7 @@
  * Authors:  SrAqua
  * ------------------------------------------------------------------------- */
 
-const { somar, subtrair, multiplicar, dividir } = require("../src/mathcore/algebra");
+const { somar, subtrair, multiplicar, dividir } = require("../src/core/algebra");
 
 console.log("=== Testes Álgebra ===");
 console.log("2 + 3 =", somar(2, 3)); // 5
