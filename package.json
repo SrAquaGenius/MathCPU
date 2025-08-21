@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "type": "commonjs",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node mathCPU.js",
     "test": "node testes/testeAlgebra.js"
   },
   "keywords": [
@@ -18,5 +18,8 @@
     "number-theory"
   ],
   "author": "SrAqua",
-  "license": "MIT"
+  "license": "MIT",
+  "directories": {
+    "doc": "docs"
+  }
 }
