@@ -1,6 +1,12 @@
 /* ----------------------------------------------------------------------------
  * File:     mathCPU.js
  * Authors:  SrAqua
+ * ----------------------------------------------------------------------------
+ * @brief ponto de entrada principal da aplicação MathCPU.
+ * 
+ * Este ficheiro inicializa o menu principal da aplicação e orquestra a 
+ * navegação entre os diferentes módulos matemáticos.
+ * Também permite ativar/desativar o modo debug e encerra a aplicação.
  * ------------------------------------------------------------------------- */
 
 const { rl } = require("./src/utils/input");
@@ -12,6 +18,12 @@ const { menuAlgebra } = require("./src/menu/menuAlgebra");
 clear();
 menuPrincipal();
 
+/**
+ * @brief Exibe o menu principal da aplicação no terminal.
+ * Caso o utilizador insira uma opção inválida, é apresentada uma mensagem
+ * de erro e o menu é exibido novamente.
+ * @returns {void}
+ */
 function menuPrincipal() {
 
 	log("=== MathCPU ===");
