@@ -32,19 +32,14 @@ function menuEstatistica(ret) {
 	});
 }
 
-/* ----------------------------------------------------------------------------
-	* @brief pede os dados necessários para aplicar o método de D'Hondt.
-	* @param {Function} ret - função a chamar no final para regressar ao menu anterior.
-	* @returns {void}
-	* ------------------------------------------------------------------------- */
 function pedirDadosDHondt(ret) {
 
 	log("\n=== Método de D'Hondt ===");
 
-	// objeto para guardar os dados
+	// Objeto para guardar os dados
 	const dados = { numPartidos: 0, numLugares: 0, votos: [], nomes: [] };
 
-	// passo 1: número de partidos
+	// Passo 1: número de partidos
 	perguntar("Número de partidos recenseados: ", (np) => {
 
 		dados.numPartidos = Number(np);
@@ -53,7 +48,7 @@ function pedirDadosDHondt(ret) {
 			return pedirDadosDHondt(ret);
 		}
 
-		// passo 2: número de lugares
+		// Passo 2: número de lugares
 		perguntar("Número de lugares a distribuir: ", (nl) => {
 			dados.numLugares = Number(nl);
 			if (isNaN(dados.numLugares) || dados.numLugares <= 0) {
@@ -61,59 +56,63 @@ function pedirDadosDHondt(ret) {
 				return pedirDadosDHondt(ret);
 			}
 
-			// passo 3: votos de cada partido
-			let i = 0;
-			function pedirVotos() {
+			// Passo 3: nomes opcionais
+			perguntar("Deseja inserir nomes dos partidos? (s/n): ", (resp) => {
 
-				// Vai pedir nomes opcionalmente
-				if (i >= dados.numPartidos) return pedirNomes(); 
+				const inserirNomes = resp.trim().toLowerCase() === "s";
 
-				perguntar(`Número de votos do partido ${i + 1}: `, (v) => {
-					const votosPartido = Number(v);
-					if (isNaN(votosPartido) || votosPartido < 0) {
-						error("Número de votos inválido");
-						return pedirVotos();
+				if (inserirNomes) {
+					let j = 0;
+					function pedirNome() {
+						if (j >= dados.numPartidos) {
+							log("\n✅ Nomes recolhidos\n");
+							return pedirVotos();
+						}
+
+						perguntar(`Nome do partido ${j + 1}: `, (nome) => {
+							const letra = String.fromCharCode(65 + j);
+							dados.nomes.push(nome || `${letra}`);
+							j++;
+							pedirNome();
+						});
 					}
-					dados.votos.push(votosPartido);
-					i++;
-					pedirVotos();
-				});
-			}
+					pedirNome();
+				}
+				else {
+					// Nomes automáticos atribuidos
+					for (let k = 0; k < dados.numPartidos; k++) {
+						const letra = String.fromCharCode(65 + k);
+						dados.nomes.push(`${letra}`);
+					}
 
-			// passo 4: nomes opcionais
-			function pedirNomes() {
-				let j = 0;
-				function pedirNome() {
-					if (j >= dados.numPartidos) {
+					pedirVotos();
+				}
+			});
+
+			// Passo 4: pedir votos (usa os nomes definidos acima)
+			function pedirVotos() {
+				let i = 0;
+				function pedirVoto() {
+					if (i >= dados.numPartidos) {
 						log("\n✅ Dados recolhidos");
-						debug(":" + dados);
+						debug(dados);
 						return ret(dados);
 					}
 
-					perguntar(`Nome do partido ${j + 1} (opcional, Enter para ignorar): `, (nome) => {
-						dados.nomes.push(nome || `Partido ${j + 1}`);
-						j++;
-						pedirNome();
+					const nomePartido = dados.nomes[i];
+					perguntar(`Número de votos no partido ${nomePartido}: `, (v) => {
+						const votosPartido = Number(v);
+						if (isNaN(votosPartido) || votosPartido < 0) {
+							error("Número de votos inválido");
+							return pedirVoto();
+						}
+						dados.votos.push(votosPartido);
+						i++;
+						pedirVoto();
 					});
 				}
-				perguntar("Deseja inserir nomes dos partidos? (s/n): ", (resp) => {
-					if (resp.toLowerCase() === "s") {
-						pedirNome();
-					}
-					
-					else {
-						// nomes automáticos
-						for (let k = 0; k < dados.numPartidos; k++) {
-							dados.nomes.push(`Partido ${k + 1}`);
-						}
-						log("\n✅ Dados recolhidos");
-						debug(":" + dados);
-						ret(dados);
-					}
-				});
+				pedirVoto();
 			}
-
-			pedirVotos();
 		});
 	});
 }
