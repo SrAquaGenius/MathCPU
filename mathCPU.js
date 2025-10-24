@@ -26,7 +26,7 @@ menuPrincipal();
  */
 function menuPrincipal() {
 
-	log("=== MathCPU ===");
+	log("===== MathCPU =====");
 	log("1 - Álgebra");
 	log("2 - Cálculo");
 	log("3 - Geometria");

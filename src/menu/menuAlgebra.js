@@ -19,7 +19,7 @@ const { log, error } = require("../utils/logger");
  */
 function menuAlgebra(ret) {
 
-	log("\n=== Álgebra ===");
+	log("\n==== Álgebra ====");
 	log("1. Somar dois números");
 	log("2. Subtrair dois números");
 	log("3. Multiplicar dois números");
