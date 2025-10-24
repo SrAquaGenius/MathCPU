@@ -14,6 +14,7 @@ const { mostrarDebug, mudarDebug } = require("./src/utils/debug");
 const { clear, log, error, todo } = require("./src/utils/logger");
 
 const { menuAlgebra } = require("./src/menu/menuAlgebra");
+const { menuEstatistica } = require("./src/menu/menuEstatistica");
 
 clear();
 menuPrincipal();
@@ -41,7 +42,7 @@ function menuPrincipal() {
 			case "2": todo("Menu Cálculo"); menuPrincipal(); break;
 			case "3": todo("Menu Geometria"); menuPrincipal(); break;
 			case "4": todo("Menu Teoria dos Números"); menuPrincipal(); break;
-			case "5": todo("Menu Estatística"); menuPrincipal(); break;
+			case "5": menuEstatistica(menuPrincipal); break;
 			case "6": mudarDebug(); menuPrincipal(); break;
 			case "0": log("👋 Adeus!"); rl.close(); break;
 			default: error("Opção inválida"); menuPrincipal();
