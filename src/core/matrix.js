@@ -14,8 +14,8 @@ class Matrix {
 			!Number.isInteger(b) || b <= 0)
 			throw new Error("Matrix: dimensions must be a positive integer");
 			
-			this.rows = a;
-			this.cols = b;
+			this.nRows = a;
+			this.nCols = b;
 			this.data = c ? this.checkData(c) : this.newZeroMatrix(a, b);
 			return;
 		}
@@ -26,8 +26,8 @@ class Matrix {
 			if (!Number.isInteger(a) || a <= 0)
 				throw new Error("Matrix: dimension must be a positive integer");
 
-			this.rows = a;
-			this.cols = a;
+			this.nRows = a;
+			this.nCols = a;
 			this.data = b ? this.checkData(b) : this.newZeroMatrix(a, a);
 			return;
 		}
@@ -48,19 +48,19 @@ class Matrix {
 			throw new Error("Matrix: data must be an array of arrays");
 		}
 
-		if (data.length !== this.rows) {
+		if (data.length !== this.nRows) {
 			throw new Error(
-				`Matrix: number of rows (${data.length}) does not match expected (${this.rows})`
+				`Matrix: number of nRows (${data.length}) does not match expected (${this.nRows})`
 			);
 		}
 
-		for (let i = 0; i < this.rows; i++) {
+		for (let i = 0; i < this.nRows; i++) {
 			if (!Array.isArray(data[i])) {
 				throw new Error(`Matrix: row ${i} is not an array`);
 			}
-			if (data[i].length !== this.cols) {
+			if (data[i].length !== this.nCols) {
 				throw new Error(
-					`Matrix: row ${i} has ${data[i].length} columns, expected ${this.cols}`
+					`Matrix: row ${i} has ${data[i].length} columns, expected ${this.nCols}`
 				);
 			}
 		}
@@ -72,6 +72,44 @@ class Matrix {
 	toString() {
 		return this.data.map(row => row.join(" ")).join("\n");
 	}
+
+	prettyPrint() {
+		const maxLen = Math.max(...this.data.flat().map(v => v.toString().length));
+
+		this.data.forEach(row => {
+			const rowStr = row.map(v => v.toString().padEnd(maxLen)).join(" ");
+			console.log(`| ${rowStr} |`);
+		});
+	}
+
+	static equals(A, B) {
+		if (A.rows !== B.rows || A.cols !== B.cols) return false;
+
+		for (let i = 0; i < A.rows; i++) {
+			for (let j = 0; j < A.cols; j++) {
+				if (A.data[i][j] !== B.data[i][j]) return false;
+			}
+		}
+
+		return true;
+	}
+
+	equals(B) { return Matrix.equals(this, B); }
+
+
+	static validateSameSize(A, B) {
+		if (A.nRows !== B.nRows || A.nCols !== B.nCols) {
+			throw new Error("Matrices must have the same dimensions.");
+		}
+	}
+
+
+	static copy(A) {
+		const dataCopy = A.data.map(row => [...row]);
+		return new Matrix(A.nRows, A.nCols, dataCopy);
+	}
+
+	copy() { return Matrix.copy(this); }
 }
 
 class ZeroMatrix extends Matrix {
