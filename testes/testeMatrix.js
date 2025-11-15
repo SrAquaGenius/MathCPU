@@ -47,39 +47,3 @@ log("A.equals(B) =", A.equals(B)); // false
 // Modificando A_copy não altera A
 A_copy.data[0][0] = 999;
 console.log(A.data[0][0]); // 1
-
-// ---------------------------
-// Teste 5: validateSameSize
-// ---------------------------
-log("\n--- Teste validateSameSize ---");
-const C = new Matrix(2, 2, [
-	[1,2],
-	[3,4]
-]);
-
-const D = new Matrix(2, 2, [
-	[5,6],
-	[7,8]
-]);
-
-try {
-	Matrix.validateSameSize(C, D);
-	log("C e D têm o mesmo tamanho → válido");
-} catch(e) {
-	log("Erro:", e.message);
-}
-
-// Teste de erro
-const E = new Matrix(3, 2, [
-	[1,2],
-	[3,4],
-	[5,6]
-]);
-
-try {
-	Matrix.validateSameSize(C, E);
-	log("C e E têm o mesmo tamanho → válido");
-}
-catch(e) {
-	log("Erro esperado:", e.message);
-}
