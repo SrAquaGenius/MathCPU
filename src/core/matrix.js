@@ -97,9 +97,15 @@ class Matrix {
 	equals(B) { return Matrix.equals(this, B); }
 
 
-	static validateSameSize(A, B) {
+	static _validateSameSize(A, B) {
 		if (A.nRows !== B.nRows || A.nCols !== B.nCols) {
 			throw new Error("Matrices must have the same dimensions.");
+		}
+	}
+
+	static _validateSquare(A) {
+		if (A.nRows !== A.nCols) {
+			throw new Error("Matrix must be a square one.");
 		}
 	}
 
@@ -111,11 +117,11 @@ class Matrix {
 
 	copy() { return Matrix.copy(this); }
 
-	// Basic Operadores -------------------------------------------------------
+	// Basic-Level Operadores -------------------------------------------------
 
 	// b1. Add two matrices
 	static add(A, B) {
-		Matrix.validateSameSize(A, B);
+		Matrix._validateSameSize(A, B);
 
 		const data = Array.from({ length: A.nRows }, (_, i) =>
 			Array.from({ length: A.nCols }, (_, j) =>
@@ -145,7 +151,7 @@ class Matrix {
 
 	// b3. Subtract two matrices
 	static sub(A, B) {
-		Matrix.validateSameSize(A, B);
+		Matrix._validateSameSize(A, B);
 		return Matrix.add(A, B.neg());
 	}
 
@@ -179,6 +185,160 @@ class Matrix {
 	}
 
 	scalarMul(s) { return Matrix.scalarMul(this, s); }
+
+	
+	// Medium-Level Operators -------------------------------------------------
+
+	// m6. Transpose a matrix
+	static transpose(A) {
+		const data = Array.from({ length: A.nCols }, (_, i) =>
+			Array.from({ length: A.nRows }, (_, j) =>
+				A.data[j][i]
+			)
+		);
+
+		return new Matrix(A.nCols, A.nRows, data);
+	}
+
+	transpose() { return Matrix.transpose(this); }
+
+
+	// m7. Trace of a matrix
+	static trace(A) {
+		Matrix._validateSquare(A);
+		return A.data.reduce((sum, row, i) => sum + row[i], 0);
+	}
+
+	trace() { return Matrix.trace(this); }
+
+
+	// m8. Determinant of a matrix
+
+	_minor(row, col) {
+		const data = this.data
+			.filter((_, i) => i !== row)
+			.map(r => r.filter((_, j) => j !== col));
+		return new Matrix(this.nRows-1, this.nCols-1, data);
+	}
+
+	static _fixFloat(x, decimals = 10) {
+		if (typeof x !== "number" || !isFinite(x)) return x; // ignora se não for número
+		return Number(x.toFixed(decimals));
+	}
+
+	static determinant(A) {
+		Matrix._validateSquare(A);
+		
+		const dim = A.nRows;
+
+		if (dim === 1) return A.data[0][0];
+		if (dim === 2) return A.data[0][0]*A.data[1][1] - A.data[0][1]*A.data[1][0];
+
+		// Laplace expansion
+		let det = 0;
+		for (let j = 0; j < dim; j++) {
+			const minor = A._minor(0, j);
+			det += ((j % 2 === 0 ? 1 : -1) * A.data[0][j] * minor.determinant());
+		}
+		return Matrix._fixFloat(det);
+	}
+
+	determinant() { return Matrix.determinant(this); }
+
+
+	// m9. Adjoint Matrix
+	
+	// Método para calcular o cofactor de uma célula (i,j)
+	cofactor(i, j) {
+		const minorMatrix = this._minor(i, j);
+		const sign = ((i + j) % 2 === 0) ? 1 : -1;
+		return sign * minorMatrix.determinant();
+	}
+
+	// Método para calcular a adjunta (adjugate)
+	static adjoint(A) {
+		Matrix._validateSquare(A);
+
+		const n = A.nRows;
+		const adjData = Array.from({ length: n }, (_, i) =>
+			Array.from({ length: n }, (_, j) =>
+				A.cofactor(j, i)  // Note: transposed
+			)
+		);
+
+		return new Matrix(n, n, adjData);
+	}
+
+	adjoint() { return Matrix.adjoint(this); }
+
+
+	// m10. Inverted Matrix
+	static inverse(A) {
+		Matrix._validateSquare(A);
+
+		const detA = A.determinant();
+		if (detA === 0) {
+			throw new Error("Matrix is singular and cannot be inverted");
+		}
+
+		const adjA = A.adjoint();
+		const invData = adjA.data.map(row =>
+			row.map(x => Matrix._fixFloat(x / detA))
+		);
+		return new Matrix(A.nRows, A.nCols, invData);
+	}
+
+	inverse() { return Matrix.inverse(this); }
+
+	static gaussJordanInverse(A) {
+		Matrix._validateSquare(A);
+
+		const n = A.nRows;
+		// Criar matriz aumentada [A | I]
+		let augmented = A.data.map((row, i) => [
+			...row,
+			...Array.from({length:n}, (_, j) => (i===j?1:0))
+		]);
+
+		// Gauss-Jordan
+		for (let i = 0; i < n; i++) {
+			// Encontrar pivô
+			let pivot = augmented[i][i];
+			if (pivot === 0) {
+				// Tentar trocar com linha abaixo
+				let swapped = false;
+				for (let k = i+1; k < n; k++) {
+					if (augmented[k][i] !== 0) {
+						[augmented[i], augmented[k]] = [augmented[k], augmented[i]];
+						pivot = augmented[i][i];
+						swapped = true;
+						break;
+					}
+				}
+				if (!swapped) throw new Error("Matrix is singular, cannot invert");
+			}
+
+			// Normalizar linha do pivô
+			for (let j = 0; j < 2*n; j++) {
+				augmented[i][j] = Matrix._fixFloat(augmented[i][j] / pivot);
+			}
+
+			// Zerificar colunas
+			for (let k = 0; k < n; k++) {
+				if (k === i) continue;
+				const factor = augmented[k][i];
+				for (let j = 0; j < 2*n; j++) {
+					augmented[k][j] =Matrix._fixFloat(augmented[k][j] - factor * augmented[i][j]);
+				}
+			}
+		}
+
+		// Extrair matriz inversa
+		const inverseData = augmented.map(row => row.slice(n));
+		return new Matrix(n, n, inverseData);
+	}
+
+	gaussJordanInverse() { return Matrix.gaussJordanInverse(this); }
 }
 
 module.exports = { Matrix };
