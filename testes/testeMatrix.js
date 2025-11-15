@@ -3,7 +3,9 @@
  * Authors:  SrAqua
  * ------------------------------------------------------------------------- */
 
-const { Matrix, IdentityMatrix, ZeroMatrix } = require("../src/core/matrix");
+const { Matrix } = require("../src/core/matrix");
+const { IdentityMatrix } = require("../src/core/identityMatrix");
+const { ZeroMatrix } = require("../src/core/zeroMatrix");
 const { log } = require("../src/utils/logger");
 
 log("=== Testes Matrix ===");

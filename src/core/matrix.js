@@ -1,5 +1,5 @@
 /* ----------------------------------------------------------------------------
-* File:     src/core/matrices.js
+* File:     src/core/matrix.js
 * Authors:  SrAqua
 * ------------------------------------------------------------------------- */
 
@@ -181,29 +181,4 @@ class Matrix {
 	scalarMul(s) { return Matrix.scalarMul(this, s); }
 }
 
-class ZeroMatrix extends Matrix {
-
-	constructor(nRows, nCols = nRows) {
-		if (!Number.isInteger(nRows) || nRows <= 0 ||
-			!Number.isInteger(nCols) || nCols <= 0)
-			throw new Error("ZeroMatrix: dimensions must be positive integers");
-
-		super(nRows, nCols);  // The Matrix constructor already creates zeros
-	}
-}
-
-class IdentityMatrix extends Matrix {
-
-	constructor(dim) {
-
-		if (!Number.isInteger(dim) || dim <= 0)
-			throw new Error("IdentityMatrix: dimension must be a positive integer");
-
-		super(dim, dim, Array.from({ length: dim }, (_, i) =>
-			Array.from({ length: dim }, (_, j) => (i === j ? 1 : 0))
-		));
-	}
-
-}
-
-module.exports = { Matrix, ZeroMatrix, IdentityMatrix };
+module.exports = { Matrix };
