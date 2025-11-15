@@ -110,6 +110,75 @@ class Matrix {
 	}
 
 	copy() { return Matrix.copy(this); }
+
+	// Basic Operadores -------------------------------------------------------
+
+	// b1. Add two matrices
+	static add(A, B) {
+		Matrix.validateSameSize(A, B);
+
+		const data = Array.from({ length: A.nRows }, (_, i) =>
+			Array.from({ length: A.nCols }, (_, j) =>
+				A.data[i][j] + B.data[i][j]
+			)
+		);
+
+		return new Matrix(A.nRows, A.nCols, data);
+	}
+
+	add(B) { return Matrix.add(this, B); }
+
+
+	// b2. Negative matrix
+	static neg(A) {
+		const data = Array.from({ length: A.nRows }, (_, i) =>
+			Array.from({ length: A.nCols }, (_, j) =>
+				-1 * A.data[i][j]
+			)
+		);
+
+		return new Matrix(A.nRows, A.nCols, data);
+	}
+
+	neg() { return Matrix.neg(this); }
+
+
+	// b3. Subtract two matrices
+	static sub(A, B) {
+		Matrix.validateSameSize(A, B);
+		return Matrix.add(A, B.neg());
+	}
+
+	sub(B) { return Matrix.sub(this, B); }
+
+
+	// b4. Multiply two matrices
+	static mul(A, B) {
+		if (A.nCols !== B.nRows) {
+			throw new Error("Matrix multiplication dimension mismatch.");
+		}
+
+		const data = Array.from({ length: A.nRows }, (_, i) =>
+			Array.from({ length: B.nCols }, (_, j) =>
+				Array.from({ length: A.nCols }, (_, k) =>
+					A.data[i][k] * B.data[k][j]
+				).reduce((a, b) => a + b, 0)
+			)
+		);
+
+		return new Matrix(A.nRows, B.nCols, data);
+	}
+
+	mul(B) { return Matrix.mul(this, B); }
+
+
+	// b5. Scalar multiplying to a matrix
+	static scalarMul(A, s) {
+		const data = A.data.map(row => row.map(x => s * x));
+		return new Matrix(A.nRows, A.nCols, data);
+	}
+
+	scalarMul(s) { return Matrix.scalarMul(this, s); }
 }
 
 class ZeroMatrix extends Matrix {
