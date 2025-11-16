@@ -192,10 +192,19 @@ class Matrix {
 
 	scalarMul(s) { return Matrix.scalarMul(this, s); }
 
-	
+	// b6. Dimension of a matrix
+	static dim(A) {
+		if (A.nRows === A.nCols) return A.nRows;
+		else return A.nRows + "x" + A.nCols;
+	}
+
+	dim() { return Matrix.dim(this); }
+
+
+
 	// Medium-Level Operators -------------------------------------------------
 
-	// m6. Transpose a matrix
+	// m7. Transpose a matrix
 	static transpose(A) {
 		const data = Array.from({ length: A.nCols }, (_, i) =>
 			Array.from({ length: A.nRows }, (_, j) =>
@@ -209,7 +218,7 @@ class Matrix {
 	transpose() { return Matrix.transpose(this); }
 
 
-	// m7. Trace of a matrix
+	// m8. Trace of a matrix
 	static trace(A) {
 		Matrix._validateSquare(A);
 		return A.data.reduce((sum, row, i) => sum + row[i], 0);
@@ -218,7 +227,7 @@ class Matrix {
 	trace() { return Matrix.trace(this); }
 
 
-	// m8. Determinant of a matrix
+	// m9. Determinant of a matrix
 
 	_minor(row, col) {
 		const data = this.data
@@ -252,7 +261,7 @@ class Matrix {
 	determinant() { return Matrix.determinant(this); }
 
 
-	// m9. Adjoint Matrix
+	// m10. Adjoint Matrix
 	
 	// Método para calcular o cofactor de uma célula (i,j)
 	cofactor(i, j) {
@@ -278,7 +287,7 @@ class Matrix {
 	adjoint() { return Matrix.adjoint(this); }
 
 
-	// m10. Inverted Matrix
+	// m11. Inverted Matrix
 	static inverse(A) {
 		Matrix._validateSquare(A);
 
