@@ -18,13 +18,13 @@ function menuEDO(ret) {
 	log("\n==== EDO ====");
 	log("1. Calcular 'Stable Manifold'");
 	log("2. Calcular 'Unstable Manifold'");
-	log("0. Voltar");
+	log("q. Voltar");
 
 	perguntar("Escolha uma operação: ", (resposta) => {
 		switch (resposta) {
 			case "1": calcularStableManifold(); break;
 			case "2": calcularUnstableManifold(); break;
-			case "0": log(); return ret();
+			case "q": log(); return ret();
 			default: 
 				error("Opção inválida");
 		}

@@ -20,12 +20,12 @@ function menuEstatistica(ret) {
 
 	log("\n==== Estatística ====");
 	log("1. Método Eleitoral de D'Hondt");
-	log("0. Voltar");
+	log("q. Voltar");
 
 	perguntar("Escolha uma operação: ", (resposta) => {
 		switch (resposta) {
 			case "1": pedirDadosDHondt((dados) => { metodoDeDHondt(dados); ret(); }); break;
-			case "0": log(); return ret();
+			case "q": log(); return ret();
 			default: 
 				error("Opção inválida");
 		}

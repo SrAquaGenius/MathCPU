@@ -25,7 +25,7 @@ function menuAritmetrica(ret) {
 	log("3. Multiplicar dois números");
 	log("4. Dividir dois números");
 	log("5. Fatorial dum número");
-	log("0. Voltar");
+	log("q. Voltar");
 
 	perguntar("Escolha uma operação: ", (resposta) => {
 		switch (resposta) {
@@ -34,7 +34,7 @@ function menuAritmetrica(ret) {
 			case "3": pedirDoisNumeros(multiplicar); break;
 			case "4": pedirDoisNumeros(dividir); break;
 			case "5": pedirUmNumero(fatorial); break;
-			case "0": log(); return ret();
+			case "q": log(); return ret();
 			default: 
 				error("Opção inválida");
 		}

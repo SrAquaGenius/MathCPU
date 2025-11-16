@@ -35,9 +35,9 @@ function menuPrincipal() {
 	log("4 - Teoria dos Números");
 	log("5 - Estatística");
 	log("6 - EDO");
-	log("7 - Álgebra Linear");
-	log("7 - Ativar/Desativar o debug: (", mostrarDebug() ? "🟢" : "⚫", ")");
-	log("0 - Sair");
+	log("7 - Operações Matriciais");
+	log("d - Ativar/Desativar o debug: (", mostrarDebug() ? "🟢" : "⚫", ")");
+	log("q - Sair");
 
 	rl.question("Escolha uma opção: ", (resposta) => {
 		switch (resposta) {
@@ -47,8 +47,9 @@ function menuPrincipal() {
 			case "4": todo("Menu Teoria dos Números"); menuPrincipal(); break;
 			case "5": menuEstatistica(menuPrincipal); break;
 			case "6": menuEDO(menuPrincipal); break;
-			case "7": mudarDebug(); menuPrincipal(); break;
-			case "0": log("👋 Adeus!"); rl.close(); break;
+			case "7": menuMatrix(menuPrincipal); break;
+			case "d": mudarDebug(); menuPrincipal(); break;
+			case "q": log("👋 Adeus!"); rl.close(); break;
 			default: error("Opção inválida"); menuPrincipal();
 		}
 	});
