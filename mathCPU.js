@@ -16,6 +16,7 @@ const { clear, log, error, todo } = require("./src/utils/logger");
 const { menuAritmetrica } = require("./src/menu/menuAritmetrica");
 const { menuEstatistica } = require("./src/menu/menuEstatistica");
 const { menuEDO } = require("./src/menu/menuEDO");
+const { menuMatrix } = require("./src/menu/menuMatrix");
 
 clear();
 menuPrincipal();
@@ -36,6 +37,7 @@ function menuPrincipal() {
 	log("5 - Estatística");
 	log("6 - EDO");
 	log("7 - Operações Matriciais");
+	log();
 	log("d - Ativar/Desativar o debug: (", mostrarDebug() ? "🟢" : "⚫", ")");
 	log("q - Sair");
 

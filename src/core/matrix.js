@@ -3,6 +3,8 @@
 * Authors:  SrAqua
 * ------------------------------------------------------------------------- */
 
+const { log } = require("../utils/logger");
+
 class Matrix {
 
 	constructor(a, b, c) {
@@ -73,14 +75,18 @@ class Matrix {
 		return this.data.map(row => row.join(" ")).join("\n");
 	}
 
-	prettyPrint() {
+	prettyString() {
 		const maxLen = Math.max(...this.data.flat().map(v => v.toString().length));
 
-		this.data.forEach(row => {
+		const linhas = this.data.map(row => {
 			const rowStr = row.map(v => v.toString().padEnd(maxLen)).join(" ");
-			console.log(`| ${rowStr} |`);
+			return `| ${rowStr} |`;
 		});
+
+		return linhas.join("\n");
 	}
+
+	prettyPrint() { log(this.prettyString()); }
 
 	static equals(A, B) {
 		if (A.rows !== B.rows || A.cols !== B.cols) return false;
