@@ -13,7 +13,7 @@ const { rl } = require("./src/utils/input");
 const { mostrarDebug, mudarDebug } = require("./src/utils/debug");
 const { clear, log, error, todo } = require("./src/utils/logger");
 
-const { menuAlgebra } = require("./src/menu/menuAlgebra");
+const { menuAritmetrica } = require("./src/menu/menuAritmetrica");
 const { menuEstatistica } = require("./src/menu/menuEstatistica");
 const { menuEDO } = require("./src/menu/menuEDO");
 
@@ -29,18 +29,19 @@ menuPrincipal();
 function menuPrincipal() {
 
 	log("===== MathCPU =====");
-	log("1 - Álgebra");
+	log("1 - Aritmétrica");
 	log("2 - Cálculo");
 	log("3 - Geometria");
 	log("4 - Teoria dos Números");
 	log("5 - Estatística");
 	log("6 - EDO");
+	log("7 - Álgebra Linear");
 	log("7 - Ativar/Desativar o debug: (", mostrarDebug() ? "🟢" : "⚫", ")");
 	log("0 - Sair");
 
 	rl.question("Escolha uma opção: ", (resposta) => {
 		switch (resposta) {
-			case "1": menuAlgebra(menuPrincipal); break;
+			case "1": menuAritmetrica(menuPrincipal); break;
 			case "2": todo("Menu Cálculo"); menuPrincipal(); break;
 			case "3": todo("Menu Geometria"); menuPrincipal(); break;
 			case "4": todo("Menu Teoria dos Números"); menuPrincipal(); break;

@@ -1,15 +1,15 @@
 /* ----------------------------------------------------------------------------
-* File:     src/menu/menuAlgebra.js
+* File:     src/menu/menuAritmetrica.js
 * Authors:  SrAqua
 * -----------------------------------------------------------------------------
-* @brief submenu de Álgebra do MathCPU. Permite ao utilizador escolher entre
-* operações básicas: soma, subtração, multiplicação e divisão.
+* @brief submenu de Aritmétrica do MathCPU. Permite ao utilizador escolher
+* entre operações básicas: soma, subtração, multiplicação e divisão.
 * ------------------------------------------------------------------------- */
 
 const { perguntar } = require("../utils/input");
 const {
 		somar, subtrair, multiplicar, dividir, fatorial
-	} = require("../core/algebra");
+	} = require("../core/aritmetrica");
 
 const { log, error } = require("../utils/logger");
 
@@ -17,9 +17,9 @@ const { log, error } = require("../utils/logger");
  * @brief Mostra o menu de Álgebra e processa a escolha do utilizador.
  * @param {Function} ret - Função a chamar quando se escolhe voltar.
  */
-function menuAlgebra(ret) {
+function menuAritmetrica(ret) {
 
-	log("\n==== Álgebra ====");
+	log("\n==== Aritmétrica ====");
 	log("1. Somar dois números");
 	log("2. Subtrair dois números");
 	log("3. Multiplicar dois números");
@@ -68,4 +68,4 @@ function menuAlgebra(ret) {
 
 }
 
-module.exports = { menuAlgebra };
+module.exports = { menuAritmetrica };
